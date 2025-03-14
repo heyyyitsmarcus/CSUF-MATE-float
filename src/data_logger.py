@@ -1,9 +1,17 @@
+# src/data_logger.py
+
 import time
+import random
 
-def log_data(data):
-    with open("logs/float_data.csv", "a") as file:
-        file.write(f"{time.time()},{data}\n")
+def collect_sensor_data(depth, file_path):
+    """Simulate collecting sensor data and store it in a CSV file."""
+    fake_temperature = round(random.uniform(10, 30), 2)  # Fake temperature
+    fake_pressure = round(1000 + depth * 10, 2)  # Simulated pressure based on depth
+    fake_data = f"{time.time()},{fake_temperature},{fake_pressure}\n"
 
-# Example usage
-if __name__ == "__main__":
-    log_data("Simulated pressure: 1013.25 hPa")
+    # Log the data to a file
+    with open(file_path, "a") as file:
+        file.write(fake_data)
+    
+    print(f"Collected Data: {fake_data.strip()}")
+

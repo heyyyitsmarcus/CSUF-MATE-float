@@ -1,18 +1,32 @@
+# src/bluetooth_comm.py
+
 import bluetooth
+import os
 
-def start_bluetooth_server():
-    server_sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    server_sock.bind(("", 1))
-    server_sock.listen(1)
+def transmit_data(file_path):
+    """Send stored data via Bluetooth when surfaced."""
+    if not os.path.exists(file_path):
+        print("No data to send.")
+        return
 
-    print("Waiting for Bluetooth connection...")
-    client_sock, addr = server_sock.accept()
-    print(f"Connected to {addr}")
+    try:
+        BT_SERVER_MAC = "XX:XX:XX:XX:XX:XX"  # Replace with actual Bluetooth MAC address
+        BT_PORT = 1
 
-    client_sock.send("Hello from Float!")
+        print("Attempting Bluetooth connection...")
+        sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        sock.connect((BT_SERVER_MAC, BT_PORT))
+        print("Connected. Sending data...")
 
-    client_sock.close()
-    server_sock.close()
+        with open(file_path, "r") as file:
+            data = file.read()
+            sock.send(data)
 
-if __name__ == "__main__":
-    start_bluetooth_server()
+        print("Data transmission complete.")
+        sock.close()
+
+        # Clear the data after transmission
+        os.remove(file_path)
+    except Exception as e:
+        print(f"Bluetooth transmission failed: {e}")
+
