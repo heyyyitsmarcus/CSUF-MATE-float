@@ -3,7 +3,7 @@
 import time
 from src.buoyancy import adjust_depth
 from src.data_logger import collect_sensor_data
-from src.bluetooth_comm import transmit_data
+from test import transmit_data
 from src.sensor_reader import read_sensor_data  # Placeholder for real sensors
 import os
 
